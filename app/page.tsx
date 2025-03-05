@@ -1,4 +1,5 @@
 import { Navbar } from "@/components/Navbar";
+import { UrlShortenerForm } from "@/components/urls/UrlShortenerForm";
 
 export default function Home() {
   return (
@@ -14,6 +15,8 @@ export default function Home() {
             to use.
           </p>
         </div>
+
+        <UrlShortenerForm />
       </div>
     </>
   );
