@@ -26,7 +26,7 @@ export const UrlShortenerForm = () => {
 
   return (
     <>
-      <div className="w-full mx-auto max-w-3xl mt-10    ">
+      <div className="w-full mx-auto max-w-3xl mt-10">
         <Form {...form}>
           <form>
             <div className="flex gap-2 mb-5">
@@ -38,6 +38,23 @@ export const UrlShortenerForm = () => {
                     <FormControl>
                       <Input
                         placeholder="Enter your url"
+                        {...field}
+                        disabled={false}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="url" // New field for custom code
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormControl>
+                      <Input
+                        placeholder="Enter custom code (optional)"
                         {...field}
                         disabled={false}
                       />
