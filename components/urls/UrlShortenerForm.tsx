@@ -116,6 +116,33 @@ export const UrlShortenerForm = () => {
                 )}
               </Button>
             </div>
+
+            <FormField
+              control={form.control}
+              name="customCode"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <div className="flex items-center mx-1">
+                      <span className="text-sm text-muted-foreground mr-2">
+                        {process.env.NEXT_PUBLIC_APP_URL ||
+                          window.location.origin}
+                        /r/
+                      </span>
+                      <Input
+                        placeholder="Custom code (optional)"
+                        {...field}
+                        value={field.value || ""}
+                        onChange={(e) => field.onChange(e.target.value || "")}
+                        disabled={isLoading}
+                        className="flex-1"
+                      />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </form>
         </Form>
       </div>
