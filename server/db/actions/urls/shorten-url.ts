@@ -1,4 +1,5 @@
-import { ApiResponse } from "@/lib/types";
+"use server";
+
 import { ensureHttps } from "@/lib/utils";
 import { z } from "zod";
 import { nanoid } from "nanoid";

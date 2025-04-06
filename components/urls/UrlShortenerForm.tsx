@@ -13,9 +13,20 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { UrlFormData, urlSchema } from "@/lib/types";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { shortenUrl } from "@/server/db/actions/urls/shorten-url";
 
 export const UrlShortenerForm = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+
   const [isLoading, setIsLoading] = useState(false);
+
+  const [shortUrl, setShortUrl] = useState<string | null>(null);
+  const [shortCode, setShortCode] = useState<string | null>(null);
+
+  const [error, setError] = useState<string | null>(null);
 
   const form = useForm<UrlFormData>({
     resolver: zodResolver(urlSchema),
@@ -24,11 +35,41 @@ export const UrlShortenerForm = () => {
     },
   });
 
+  const onSubmit = async (data: UrlFormData) => {
+    setIsLoading(true);
+    setError(null);
+    setShortUrl(null);
+    setShortCode(null);
+
+    try {
+      const formData = new FormData();
+      formData.append("url", data.url);
+
+      const res = await shortenUrl(formData);
+
+      if (res.success && res.data) {
+        setShortUrl(res.data.shortUrl);
+
+        // extract the short code from the short url
+        const shortCodeMatch = res.data.shortUrl.match(/\/r\/([^/]+)$/);
+
+        if (shortCodeMatch && shortCodeMatch[1]) {
+          setShortCode(shortCodeMatch[1]);
+        }
+      }
+    } catch (error) {
+      setError("Error occured while submitting");
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <>
       <div className="w-full mx-auto max-w-3xl mt-10">
         <Form {...form}>
-          <form>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex gap-2 mb-5">
               <FormField
                 control={form.control}
@@ -47,7 +88,7 @@ export const UrlShortenerForm = () => {
                 )}
               />
 
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="url" // New field for custom code
                 render={({ field }) => (
@@ -62,7 +103,7 @@ export const UrlShortenerForm = () => {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
 
               <Button type="submit" disabled={isLoading}>
                 {isLoading ? (
