@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Form,
   FormControl,
@@ -16,6 +16,8 @@ import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { shortenUrl } from "@/server/db/actions/urls/shorten-url";
+import { Card, CardContent } from "../ui/card";
+import { Copy, QrCode } from "lucide-react";
 
 export const UrlShortenerForm = () => {
   const router = useRouter();
@@ -27,6 +29,13 @@ export const UrlShortenerForm = () => {
   const [shortCode, setShortCode] = useState<string | null>(null);
 
   const [error, setError] = useState<string | null>(null);
+
+  const [origin, setOrigin] = useState("");
+
+  useEffect(() => {
+    // Safe to use window here
+    setOrigin(window.location.origin);
+  }, []);
 
   const form = useForm<UrlFormData>({
     resolver: zodResolver(urlSchema),
@@ -62,6 +71,16 @@ export const UrlShortenerForm = () => {
       console.log(error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const copyToClipboard = async () => {
+    if (!shortUrl) return;
+
+    try {
+      await navigator.clipboard.writeText(shortUrl);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -105,7 +124,11 @@ export const UrlShortenerForm = () => {
                 )}
               /> */}
 
-              <Button type="submit" disabled={isLoading}>
+              <Button
+                type="submit"
+                className="hover:cursor-pointer active:scale-95 transition-all"
+                disabled={isLoading}
+              >
                 {isLoading ? (
                   <>
                     <span className="mr-2 size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
@@ -125,8 +148,7 @@ export const UrlShortenerForm = () => {
                   <FormControl>
                     <div className="flex items-center mx-1">
                       <span className="text-sm text-muted-foreground mr-2">
-                        {process.env.NEXT_PUBLIC_APP_URL ||
-                          window.location.origin}
+                        {process.env.NEXT_PUBLIC_APP_URL || origin}
                         /r/
                       </span>
                       <Input
@@ -143,6 +165,49 @@ export const UrlShortenerForm = () => {
                 </FormItem>
               )}
             />
+
+            {error && (
+              <div className="p-3 bg-destructive/10 text-destructive rounded-md text-sm">
+                {error}
+              </div>
+            )}
+
+            {shortUrl && (
+              <Card className="mt-10">
+                <CardContent className="p-4">
+                  <p className="text-sm font-medium text-muted-foreground mb-4">
+                    Your shortened URL:
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <Input
+                      type="text"
+                      value={shortUrl}
+                      readOnly
+                      className="font-medium"
+                    />
+
+                    <Button
+                      type="button"
+                      variant={"outline"}
+                      className="flex-shrink-0 hover:cursor-pointer active:scale-95 transition-all"
+                      onClick={copyToClipboard}
+                    >
+                      <Copy className="size-4 mr-1" />
+                      Copy
+                    </Button>
+
+                    <Button
+                      type="button"
+                      variant={"outline"}
+                      className="flex-shrink-0 hover:cursor-pointer active:scale-95 transition-all"
+                      // onClick={showQrCode}
+                    >
+                      <QrCode className="size-4" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </form>
         </Form>
       </div>
