@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import {
   integer,
   pgEnum,
@@ -10,19 +11,10 @@ import {
 } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "next-auth/adapters";
 
-export const urls = pgTable("urls", {
-  id: serial("id").primaryKey(),
-  originalUrl: varchar("original_url", { length: 2000 }).notNull(),
-  shortCode: varchar("short_code", { length: 10 }).notNull().unique(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at").notNull().defaultNow(),
-  clicks: integer("clicks").default(0).notNull(),
-});
-
-// define user roles
+// User role enum: 'user' or 'admin'
 export const userRoleEnums = pgEnum("user_role", ["user", "admin"]);
 
-// define user tables
+// Users table: stores user info and auth metadata
 export const users = pgTable("users", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),
   name: varchar("name", { length: 255 }),
@@ -35,6 +27,7 @@ export const users = pgTable("users", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
+// OAuth accounts table for external providers
 export const accounts = pgTable(
   "accounts",
   {
@@ -65,6 +58,7 @@ export const accounts = pgTable(
   ]
 );
 
+// User session tokens (for NextAuth session strategy)
 export const sessions = pgTable("sessions", {
   sessionToken: varchar("session_token", { length: 255 })
     .notNull()
@@ -75,6 +69,7 @@ export const sessions = pgTable("sessions", {
   expires: timestamp("expires", { mode: "date" }).notNull(),
 });
 
+// Tokens used for email verification / password reset
 export const verificationTokens = pgTable(
   "verification_token",
   {
@@ -90,3 +85,31 @@ export const verificationTokens = pgTable(
     },
   ]
 );
+
+// URL shortener table
+export const urls = pgTable("urls", {
+  id: serial("id").primaryKey(),
+  originalUrl: varchar("original_url", { length: 2000 }).notNull(),
+  shortCode: varchar("short_code", { length: 10 }).notNull().unique(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  clicks: integer("clicks").default(0).notNull(),
+  userId: varchar("user_id", { length: 255 }).references(() => users.id, {
+    onDelete: "set null",
+  }),
+});
+
+// Define relations for the users table
+export const usersRelations = relations(users, ({ many }) => ({
+  urls: many(urls), // A user can have many shortened URLs
+  accounts: many(accounts), // A user can have multiple auth provider accounts
+  sessions: many(sessions), // A user can have multiple active sessions
+}));
+
+// Define relations for the urls table
+export const urlsRelations = relations(urls, ({ one }) => ({
+  user: one(users, {
+    fields: [urls.userId], // Foreign key field in urls table
+    references: [users.id], // References the id field in users table
+  }),
+}));
