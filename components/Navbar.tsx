@@ -12,9 +12,17 @@ export const Navbar = () => {
         </Link>
 
         <div className="flex items-center gap-4">
-          <Button variant="outline" className="hover:cursor-pointer">
-            Sign In
-          </Button>
+          <Link href="/login">
+            <Button variant="outline" className="hover:cursor-pointer">
+              Log In
+            </Button>
+          </Link>
+
+          <Link href="/register">
+            <Button variant="outline" className="hover:cursor-pointer">
+              Sign Up
+            </Button>
+          </Link>
 
           <ModeSwitcher />
         </div>
