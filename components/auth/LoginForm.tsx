@@ -2,7 +2,6 @@
 
 import { signIn } from "next-auth/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -18,6 +17,8 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Loader2 } from "lucide-react";
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -28,7 +29,6 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 
 export const LoginForm = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -99,19 +99,21 @@ export const LoginForm = () => {
         <Button
           variant={"outline"}
           disabled={isLoading}
-          onClick={handleGithubSignIn}
+          onClick={handleGoogleSignIn}
           className="cursor-pointer"
         >
-          Sign in with GitHub
+          <FcGoogle className="mr-1" />
+          Sign in with Google
         </Button>
 
         <Button
           variant={"outline"}
           disabled={isLoading}
-          onClick={handleGoogleSignIn}
+          onClick={handleGithubSignIn}
           className="cursor-pointer"
         >
-          Sign in with Google
+          <FaGithub className="mr-1" />
+          Sign in with GitHub
         </Button>
       </div>
 
@@ -180,6 +182,16 @@ export const LoginForm = () => {
             {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
             Sign in
           </Button>
+
+          <div className="mt-4 text-center text-sm text-muted-foreground">
+            Don&apos;t have an account?{" "}
+            <a
+              href="/register"
+              className="hover:underline hover:text-foreground/95 transition-all"
+            >
+              Sign up
+            </a>
+          </div>
         </form>
       </Form>
     </div>
