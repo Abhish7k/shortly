@@ -3,9 +3,9 @@
 import { ensureHttps } from "@/lib/utils";
 import { z } from "zod";
 import { nanoid } from "nanoid";
-import { db } from "../..";
-import { urls } from "../../schema";
 import { revalidatePath } from "next/cache";
+import { db } from "@/server/db";
+import { urls } from "@/server/db/schema";
 
 type ShortenUrlResponse =
   | {

@@ -16,6 +16,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
+import { registerUser } from "@/server/actions/auth/register";
 
 interface RegisterFormData {
   name: string;
@@ -66,7 +67,9 @@ export const RegisterForm = () => {
       const res = await registerUser(formData);
 
       if (!res.success) {
-        setError(res.error);
+        setError(
+          res.error || "An unexpected error occurred. Registration failed."
+        );
 
         return;
       }
