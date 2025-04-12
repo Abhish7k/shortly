@@ -8,7 +8,7 @@ export const Navbar = () => {
     <nav className="px-6 py-4 border-b">
       <div className="flex justify-between items-center max-w-6xl mx-auto">
         <Link href="/">
-          <h1 className="text-3xl font-bold">Shortly</h1>
+          <h1 className="text-3xl font-bold">Shrinq</h1>
         </Link>
 
         <div className="flex items-center gap-4">
