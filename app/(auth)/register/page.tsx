@@ -1,3 +1,4 @@
+import { RegisterForm } from "@/components/auth/RegisterForm";
 import {
   Card,
   CardContent,
@@ -8,7 +9,7 @@ import {
 
 export default function RegisterPage() {
   return (
-    <div className="container flex mt-32 lg:mt-40 flex-col items-center justify-center transition-all">
+    <div className="flex items-center justify-center h-[80vh]">
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
         <div className="flex flex-col space-y-2 text-center">
           <h1 className="text-2xl font-semibold tracking-tight">
@@ -26,7 +27,9 @@ export default function RegisterPage() {
               Fill your details below to create an account.
             </CardDescription>
           </CardHeader>
-          <CardContent>{/* <RegisterForm /> */}</CardContent>
+          <CardContent>
+            <RegisterForm />
+          </CardContent>
         </Card>
       </div>
     </div>
