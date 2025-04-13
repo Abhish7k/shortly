@@ -6,6 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { UrlShortenerForm } from "@/components/urls/UrlShortenerForm";
+import { getUserUrls } from "@/server/actions/urls/get-user-urls";
 import { auth } from "@/server/auth";
 import { db } from "@/server/db";
 import Link from "next/link";
@@ -22,6 +23,9 @@ const DashboardPage = async () => {
 
   console.log(session);
   console.log(role?.role);
+
+  const userUrls = await getUserUrls(userId as string);
+  console.log(userUrls.urls);
 
   return (
     <>
