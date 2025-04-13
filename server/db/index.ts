@@ -9,6 +9,6 @@ const client = postgres(connectionString, {
   prepare: false,
 });
 
-export const db = drizzle(client, { schema });
+const db = drizzle(client, { schema });
 
 export { eq, and, or, like, desc, asc } from "drizzle-orm";
