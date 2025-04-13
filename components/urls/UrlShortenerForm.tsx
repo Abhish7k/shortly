@@ -13,16 +13,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { UrlFormData, urlSchema } from "@/lib/types";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-// import { useRouter } from "next/navigation";
-// import { usePathname } from "next/navigation";
 import { Card, CardContent } from "../ui/card";
 import { Copy, QrCode } from "lucide-react";
 import { shortenUrl } from "@/server/actions/urls/shorten-url";
+import { toast } from "sonner";
 
 export const UrlShortenerForm = () => {
-  // const router = useRouter();
-  // const pathname = usePathname();
-
   const [isLoading, setIsLoading] = useState(false);
 
   const [shortUrl, setShortUrl] = useState<string | null>(null);
@@ -65,6 +61,10 @@ export const UrlShortenerForm = () => {
         if (shortCodeMatch && shortCodeMatch[1]) {
           setShortCode(shortCodeMatch[1]);
         }
+
+        toast.success("URL shortened successfully!", {
+          position: "top-right",
+        });
       }
     } catch (error) {
       setError("Error occured while submitting");
@@ -78,9 +78,19 @@ export const UrlShortenerForm = () => {
     if (!shortUrl) return;
 
     try {
+      toast.success("Copied to clipboard!", {
+        position: "top-right",
+      });
+
+      console.log("Copying to clipboard:");
+
       await navigator.clipboard.writeText(shortUrl);
     } catch (error) {
       console.error(error);
+
+      toast.error("Failed to copy URL.", {
+        position: "top-right",
+      });
     }
   };
 
@@ -125,7 +135,7 @@ export const UrlShortenerForm = () => {
 
             <FormField
               control={form.control}
-              name="customCode"
+              name="url"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
