@@ -29,7 +29,10 @@ const UserNav = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+        <Button
+          variant="ghost"
+          className="relative h-10 w-10 rounded-full cursor-pointer"
+        >
           <Avatar className="h-10 w-10 rounded-full">
             <AvatarImage src={image} alt="profile-image" />
 

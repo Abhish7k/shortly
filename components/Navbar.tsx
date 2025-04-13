@@ -10,8 +10,6 @@ export const Navbar = async () => {
 
   const user = authenticatedUser?.user;
 
-  console.log(authenticatedUser);
-
   return (
     <nav className="px-6 py-4 border-b">
       <div className="flex justify-between items-center max-w-6xl mx-auto">
@@ -19,7 +17,7 @@ export const Navbar = async () => {
           <h1 className="text-3xl font-bold">Shrinq</h1>
         </Link>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-1">
           {authenticatedUser ? (
             <UserNav
               name={user?.name as string}

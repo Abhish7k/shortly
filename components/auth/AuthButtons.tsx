@@ -5,6 +5,7 @@ import { Loader2 } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import { Button } from "../ui/button";
+import { signIn } from "next-auth/react";
 
 export const GoogleAuthButton = () => {
   const { pending } = useFormStatus();
@@ -17,10 +18,15 @@ export const GoogleAuthButton = () => {
           Please wait
         </Button>
       ) : (
-        <Button variant="outline" className="w-full text-base cursor-pointer">
-          <FcGoogle className="size-4 mr-2 dark:invert" />
+        <button
+          onClick={() =>
+            signIn("google", { redirect: false }, { prompt: "login" })
+          }
+          className="border rounded-md py-2 mt-4 flex items-center gap-4 px-5 md:px-10 hover:bg-foreground/5 transition-all duration-300 active:scale-90"
+        >
+          <FcGoogle className="text-xl" />
           Sign in with Google
-        </Button>
+        </button>
       )}
     </>
   );
@@ -37,10 +43,15 @@ export const GithubAuthButton = () => {
           Please wait
         </Button>
       ) : (
-        <Button variant="outline" className="w-full text-base  cursor-pointer">
-          <FaGithub className="size-4 mr-2 dark:invert" />
-          Sign in with Github
-        </Button>
+        <button
+          onClick={() =>
+            signIn("github", { redirect: false }, { prompt: "login" })
+          }
+          className="border rounded-md py-2 mt-4 flex items-center gap-4 px-5 md:px-10 hover:bg-foreground/5 transition-all duration-300 active:scale-90"
+        >
+          <FaGithub className="text-xl" />
+          Sign in with GitHub
+        </button>
       )}
     </>
   );
