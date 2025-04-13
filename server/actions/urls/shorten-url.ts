@@ -5,6 +5,7 @@ import { z } from "zod";
 import { nanoid } from "nanoid";
 import { revalidatePath } from "next/cache";
 import { db } from "@/server/db";
+import { auth } from "@/server/auth";
 
 type ShortenUrlResponse =
   | {
@@ -26,6 +27,9 @@ export const shortenUrl = async (
   formData: FormData
 ): Promise<ShortenUrlResponse> => {
   try {
+    const session = await auth();
+    const userId = session?.user?.id ?? null;
+
     const url = formData.get("url") as string;
 
     const validatedFields = shortenUrlSchema.safeParse({ url });
@@ -56,6 +60,7 @@ export const shortenUrl = async (
       data: {
         originalUrl,
         shortCode,
+        userId,
       },
     });
 

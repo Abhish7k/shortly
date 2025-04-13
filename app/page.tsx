@@ -1,10 +1,8 @@
-import { Navbar } from "@/components/Navbar";
 import { UrlShortenerForm } from "@/components/urls/UrlShortenerForm";
 
 export default function Home() {
   return (
     <>
-      <Navbar />
       <div className="flex flex-1 flex-col items-center justify-center p-6 md:p-24">
         <div className="w-full max-w-3xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">

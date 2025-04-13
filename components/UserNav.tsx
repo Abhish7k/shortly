@@ -31,7 +31,7 @@ const UserNav = ({
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="relative h-10 w-10 rounded-full cursor-pointer"
+          className="relative h-10 w-10 rounded-full cursor-pointer mr-2"
         >
           <Avatar className="h-10 w-10 rounded-full">
             <AvatarImage src={image} alt="profile-image" />
@@ -43,9 +43,11 @@ const UserNav = ({
 
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel>
-          <div className="flex flex-col space-y-1">
+          <div className="flex flex-col space-y-1 w-fit">
             <p className="text-lg font-medium leading-none">{name}</p>
-            <p className="leading-none text-muted-foreground">{email}</p>
+            <p className="text-xs leading-none text-muted-foreground">
+              {email}
+            </p>
           </div>
         </DropdownMenuLabel>
 
