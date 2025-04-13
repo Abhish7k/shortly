@@ -27,9 +27,7 @@ export default function RegisterPage() {
               Fill your details below to create an account.
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <RegisterForm />
-          </CardContent>
+          <CardContent>{/* <RegisterForm /> */}</CardContent>
         </Card>
       </div>
     </div>

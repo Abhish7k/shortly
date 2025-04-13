@@ -5,7 +5,6 @@ import { z } from "zod";
 import { nanoid } from "nanoid";
 import { revalidatePath } from "next/cache";
 import { db } from "@/server/db";
-import { urls } from "@/server/db/schema";
 
 type ShortenUrlResponse =
   | {
@@ -43,19 +42,21 @@ export const shortenUrl = async (
 
     const shortCode = nanoid(6);
 
-    const exisitingUrl = await db.query.urls.findFirst({
-      where: (urls, { eq }) => eq(urls.shortCode, shortCode),
+    const exisitingUrl = await db.url.findFirst({
+      where: {
+        shortCode,
+      },
     });
 
     if (exisitingUrl) {
       return shortenUrl(formData);
     }
 
-    await db.insert(urls).values({
-      originalUrl,
-      shortCode,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+    await db.url.create({
+      data: {
+        originalUrl,
+        shortCode,
+      },
     });
 
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";

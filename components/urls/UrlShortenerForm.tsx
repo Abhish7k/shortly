@@ -13,15 +13,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { UrlFormData, urlSchema } from "@/lib/types";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation";
-import { shortenUrl } from "@/server/db/actions/urls/shorten-url";
+// import { useRouter } from "next/navigation";
+// import { usePathname } from "next/navigation";
 import { Card, CardContent } from "../ui/card";
 import { Copy, QrCode } from "lucide-react";
+import { shortenUrl } from "@/server/actions/urls/shorten-url";
 
 export const UrlShortenerForm = () => {
-  const router = useRouter();
-  const pathname = usePathname();
+  // const router = useRouter();
+  // const pathname = usePathname();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -106,23 +106,6 @@ export const UrlShortenerForm = () => {
                   </FormItem>
                 )}
               />
-
-              {/* <FormField
-                control={form.control}
-                name="url" // New field for custom code
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormControl>
-                      <Input
-                        placeholder="Enter custom code (optional)"
-                        {...field}
-                        disabled={false}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
 
               <Button
                 type="submit"

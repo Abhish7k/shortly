@@ -14,13 +14,7 @@ export const Navbar = () => {
         <div className="flex items-center gap-4">
           <Link href="/login">
             <Button variant="outline" className="hover:cursor-pointer">
-              Log In
-            </Button>
-          </Link>
-
-          <Link href="/register">
-            <Button variant="outline" className="hover:cursor-pointer">
-              Sign Up
+              Sign in
             </Button>
           </Link>
 
