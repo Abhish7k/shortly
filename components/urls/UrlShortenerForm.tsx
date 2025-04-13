@@ -17,6 +17,7 @@ import { Card, CardContent } from "../ui/card";
 import { Copy, QrCode } from "lucide-react";
 import { shortenUrl } from "@/server/actions/urls/shorten-url";
 import { toast } from "sonner";
+import { QRCodeModal } from "./QrCodeModal";
 
 export const UrlShortenerForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,6 +28,8 @@ export const UrlShortenerForm = () => {
   const [error, setError] = useState<string | null>(null);
 
   const [origin, setOrigin] = useState("");
+
+  const [isQrCodeModalOpen, setIsQrCodeModalOpen] = useState(false);
 
   useEffect(() => {
     // Safe to use window here
@@ -92,6 +95,12 @@ export const UrlShortenerForm = () => {
         position: "top-right",
       });
     }
+  };
+
+  const showQrCode = () => {
+    if (!shortUrl || !shortCode) return;
+
+    setIsQrCodeModalOpen(true);
   };
 
   return (
@@ -193,7 +202,7 @@ export const UrlShortenerForm = () => {
                       type="button"
                       variant={"outline"}
                       className="flex-shrink-0 hover:cursor-pointer active:scale-95 transition-all"
-                      // onClick={showQrCode}
+                      onClick={showQrCode}
                     >
                       <QrCode className="size-4" />
                     </Button>
@@ -204,6 +213,15 @@ export const UrlShortenerForm = () => {
           </form>
         </Form>
       </div>
+
+      {shortUrl && (
+        <QRCodeModal
+          isOpen={isQrCodeModalOpen}
+          onOpenChange={setIsQrCodeModalOpen}
+          url={shortUrl}
+          // shortCode={shortCode}
+        />
+      )}
     </>
   );
 };
