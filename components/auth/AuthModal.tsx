@@ -12,7 +12,9 @@ const AuthModal = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Sign In</Button>
+        <Button variant="outline" className="cursor-pointer">
+          Sign In
+        </Button>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-[360px] py-10">

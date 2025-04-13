@@ -12,7 +12,7 @@ export const GoogleAuthButton = () => {
   return (
     <>
       {pending ? (
-        <Button variant="outline" className="w-full" disabled>
+        <Button variant="outline" className="text-base w-52" disabled>
           <Loader2 className="size-4 animate-spin" />
           Please wait
         </Button>
@@ -52,12 +52,12 @@ export const LogoutButton = () => {
   return (
     <>
       {pending ? (
-        <Button variant="outline" className="text-base w-52" disabled>
+        <Button variant="outline" className="text-base" disabled>
           <Loader2 className="size-4 animate-spin" />
           Please wait
         </Button>
       ) : (
-        <Button variant="outline" className="">
+        <Button variant="outline" className="cursor-pointer">
           Logout
         </Button>
       )}

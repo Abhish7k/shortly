@@ -2,8 +2,16 @@ import React from "react";
 import { ModeSwitcher } from "./toggle";
 import Link from "next/link";
 import AuthModal from "./auth/AuthModal";
+import { auth } from "@/server/auth";
+import UserNav from "./UserNav";
 
-export const Navbar = () => {
+export const Navbar = async () => {
+  const authenticatedUser = await auth();
+
+  const user = authenticatedUser?.user;
+
+  console.log(authenticatedUser);
+
   return (
     <nav className="px-6 py-4 border-b">
       <div className="flex justify-between items-center max-w-6xl mx-auto">
@@ -12,7 +20,15 @@ export const Navbar = () => {
         </Link>
 
         <div className="flex items-center gap-4">
-          <AuthModal />
+          {authenticatedUser ? (
+            <UserNav
+              name={user?.name as string}
+              email={user?.email as string}
+              image={user?.image as string}
+            />
+          ) : (
+            <AuthModal />
+          )}
 
           <ModeSwitcher />
         </div>
