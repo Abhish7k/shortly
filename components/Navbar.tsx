@@ -1,7 +1,7 @@
 import React from "react";
-import { Button } from "./ui/button";
 import { ModeSwitcher } from "./toggle";
 import Link from "next/link";
+import AuthModal from "./auth/AuthModal";
 
 export const Navbar = () => {
   return (
@@ -12,11 +12,7 @@ export const Navbar = () => {
         </Link>
 
         <div className="flex items-center gap-4">
-          <Link href="/login">
-            <Button variant="outline" className="hover:cursor-pointer">
-              Sign in
-            </Button>
-          </Link>
+          <AuthModal />
 
           <ModeSwitcher />
         </div>
